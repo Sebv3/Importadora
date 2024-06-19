@@ -4,7 +4,7 @@
  */
 package vistas;
 
-import bd.conexion;
+import bd.conexionLogin;
 import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ public class Principal extends javax.swing.JFrame {
     
     private static final String SELECT_USUARIO_SQL = "SELECT TIPO_ID FROM USUARIO WHERE CORREO = ? AND CONTRASENIA = ?";
     
-    conexion con = new conexion();
+    conexionLogin con = new conexionLogin();
     Connection cn = con.ConectarBD();
     
     public Principal() {

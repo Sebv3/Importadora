@@ -4,7 +4,7 @@
  */
 package vistas;
 
-import bd.conexion;
+import bd.conexionLogin;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * @author salme
  */
 public class Registro extends javax.swing.JFrame {
-    conexion con = new conexion();
+    conexionLogin con = new conexionLogin();
     Connection cn = con.ConectarBD();
 
     /**

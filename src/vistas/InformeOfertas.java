@@ -4,13 +4,16 @@
  */
 package vistas;
 
-import bd.conexion;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import almacenarImagen.ProductosOferta;
+import almacenarImagen.RenderImagen;
+import bd.conexionOferta;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,45 +21,72 @@ import javax.swing.table.DefaultTableModel;
  * @author salme
  */
 public class InformeOfertas extends javax.swing.JFrame {
-    conexion con = new conexion();
-    Connection cn = con.ConectarBD();
+    conexionOferta con;
+    DefaultTableModel modeloTablaOferta = new DefaultTableModel();
+    String Ruta = "";
     /**
      * Creates new form InformeOfertas
      */
     public InformeOfertas() {
+        con = new conexionOferta();
         initComponents();
-        mostrarProductos();
+        modeloTablaOferta.addColumn("id");
+        modeloTablaOferta.addColumn("nombre");
+        modeloTablaOferta.addColumn("descripcion");
+        modeloTablaOferta.addColumn("precio");
+        modeloTablaOferta.addColumn("imagen");
+        CargarProductos();
     }
     
-    void mostrarProductos(){
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Descripcion");
-        modelo.addColumn("Precio");
-        tablaProductosOferta.setModel(modelo);
-        
-        String sql = "SELECT * FROM productos_oferta";
-        
-        String datos[] = new String[4];
-        Statement st;
-        try {
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                modelo.addRow(datos);
+    
+    
+    private void CargarProductos() {
+
+        tablaProductosOferta.setDefaultRenderer(Object.class, new RenderImagen());
+
+        ArrayList ProdutosLista;
+        ProductosOferta mProducto;
+
+        if (con.ConectarBD()) {
+            Object Datos[] = new Object[5];
+            ProdutosLista = con.CargarProductos();
+
+            if (ProdutosLista != null) {
+                for (int i = 0; i < ProdutosLista.size(); i++) {
+                    mProducto = (ProductosOferta) ProdutosLista.get(i);
+                    Datos[0] = String.valueOf(mProducto.getId_producto());
+                    Datos[1] = mProducto.getNombre_producto();
+                    Datos[2] = String.valueOf(mProducto.getDescripcion_producto());
+                    Datos[3] = String.valueOf(mProducto.getPrecio_producto());
+
+                    try {
+                        byte[] imagen = mProducto.getImagen_producto();
+                        BufferedImage bufferedImage = null;
+                        InputStream inputStream = new ByteArrayInputStream(imagen);
+                        bufferedImage = ImageIO.read(inputStream);
+                        ImageIcon mIcono = new ImageIcon(bufferedImage.getScaledInstance(60, 60, 0));
+                        Datos[4] = new JLabel(mIcono);
+                    } catch (Exception e) {
+                        Datos[4] = new JLabel("No Imagen");
+                    }
+
+                    modeloTablaOferta.addRow(Datos);
+                }
+                tablaProductosOferta.setModel(modeloTablaOferta);
+                tablaProductosOferta.setRowHeight(60);
+                tablaProductosOferta.getColumnModel().getColumn(0).setPreferredWidth(60);
+                tablaProductosOferta.getColumnModel().getColumn(1).setPreferredWidth(60);
+                tablaProductosOferta.getColumnModel().getColumn(2).setPreferredWidth(60);
+                tablaProductosOferta.getColumnModel().getColumn(3).setPreferredWidth(60);
+                tablaProductosOferta.getColumnModel().getColumn(4).setPreferredWidth(60);
+
             }
-            tablaProductosOferta.setModel(modelo);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(GestionOfertaChina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,14 +112,14 @@ public class InformeOfertas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Descripcion", "Precio"
+                "ID", "Nombre", "Descripcion", "Precio", "Imagen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -161,7 +191,7 @@ public class InformeOfertas extends javax.swing.JFrame {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         dispose();
-        MenuAgente age = new MenuAgente();
+        MenuSupervisor age = new MenuSupervisor();
         age.setVisible(true);
         age.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAtrasActionPerformed
@@ -191,6 +221,7 @@ public class InformeOfertas extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(InformeOfertas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
