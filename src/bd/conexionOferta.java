@@ -1,7 +1,7 @@
 package bd;
 
-import almacenarImagen.Productos;
-import almacenarImagen.ProductosOferta;
+import packageBase.Productos;
+import packageBase.ProductosOferta;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

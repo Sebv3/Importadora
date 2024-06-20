@@ -4,8 +4,8 @@
  */
 package vistas;
 
-import almacenarImagen.Productos;
-import almacenarImagen.RenderImagen;
+import packageBase.Productos;
+import packageBase.RenderImagen;
 import bd.conexionProductos;
 import java.awt.Image;
 import java.awt.image.BufferedImage;

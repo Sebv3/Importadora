@@ -1,4 +1,4 @@
-package almacenarImagen;
+package packageBase;
 
 import java.awt.Component;
 import javax.swing.table.DefaultTableCellRenderer;

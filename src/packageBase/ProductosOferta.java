@@ -1,10 +1,10 @@
-package almacenarImagen;
+package packageBase;
 
-public class Productos {
+public class ProductosOferta {
     private int id_producto;
     private String nombre_producto;
+    private String descripcion_producto;
     private int precio_producto;
-    private int stock_producto;
     private byte [] imagen_producto;
 
     public int getId_producto() {
@@ -23,20 +23,20 @@ public class Productos {
         this.nombre_producto = nombre_producto;
     }
 
+    public String getDescripcion_producto() {
+        return descripcion_producto;
+    }
+
+    public void setDescripcion_producto(String descripcion_producto) {
+        this.descripcion_producto = descripcion_producto;
+    }
+
     public int getPrecio_producto() {
         return precio_producto;
     }
 
     public void setPrecio_producto(int precio_producto) {
         this.precio_producto = precio_producto;
-    }
-
-    public int getStock_producto() {
-        return stock_producto;
-    }
-
-    public void setStock_producto(int stock_producto) {
-        this.stock_producto = stock_producto;
     }
 
     public byte[] getImagen_producto() {
@@ -48,7 +48,5 @@ public class Productos {
     }
     
     
-     
+    
 }
-
-
