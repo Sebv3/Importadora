@@ -29,8 +29,8 @@ public class MenuCliente extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnMiPedido = new javax.swing.JButton();
+        btnProductosCliente = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -46,20 +46,25 @@ public class MenuCliente extends javax.swing.JFrame {
         jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
         jLabel1.setText("Menú Principal");
 
-        jButton3.setBackground(new java.awt.Color(155, 179, 232));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setText("Mi pedido");
-        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jButton1.setBackground(new java.awt.Color(155, 179, 232));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Catalogo Productos");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnMiPedido.setBackground(new java.awt.Color(155, 179, 232));
+        btnMiPedido.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnMiPedido.setText("Mi pedido");
+        btnMiPedido.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMiPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMiPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnMiPedidoActionPerformed(evt);
+            }
+        });
+
+        btnProductosCliente.setBackground(new java.awt.Color(155, 179, 232));
+        btnProductosCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnProductosCliente.setText("Catalogo Productos");
+        btnProductosCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnProductosCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProductosCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductosClienteActionPerformed(evt);
             }
         });
 
@@ -86,8 +91,8 @@ public class MenuCliente extends javax.swing.JFrame {
                         .addGap(54, 54, 54)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnMiPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnProductosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(278, 278, 278))
         );
@@ -101,9 +106,9 @@ public class MenuCliente extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addComponent(jLabel1)
                 .addGap(57, 57, 57)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMiPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnProductosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(182, Short.MAX_VALUE))
@@ -123,9 +128,19 @@ public class MenuCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnProductosClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosClienteActionPerformed
+        dispose();
+        ProductosCliente pCli = new ProductosCliente();
+        pCli.setVisible(true);
+        pCli.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnProductosClienteActionPerformed
+
+    private void btnMiPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiPedidoActionPerformed
+        dispose();
+        MiPedido ped = new MiPedido();
+        ped.setVisible(true);
+        ped.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnMiPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,9 +178,9 @@ public class MenuCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnMiPedido;
+    private javax.swing.JButton btnProductosCliente;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

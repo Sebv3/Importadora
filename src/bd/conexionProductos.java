@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 public class conexionProductos {
 
     Connection cn;
@@ -21,6 +20,7 @@ public class conexionProductos {
     private String SQL_CONSULTA = "SELECT * FROM productos";
     private String SQL_ELIMINAR = "DELETE FROM productos WHERE id = ?";
     private String SQL_ACTUALIZAR = "UPDATE productos SET id = ?, nombre = ?, precio = ?, stock = ?, imagen = ? WHERE id = ?";
+    private String SQL_PRODUCTO_PEDIDO = "INSERT INTO detalle_pedido (producto_id, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
 
     public boolean ConectarBD() {
         try {
@@ -149,4 +149,58 @@ public class conexionProductos {
         }
 
     }
+
+    public void actualizarStock(int id, int cantidad) {
+        String SQL_ACTUALIZAR_STOCK = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = cn.prepareStatement(SQL_ACTUALIZAR_STOCK);
+            preparedStatement.setInt(1, cantidad);
+            preparedStatement.setInt(2, id);
+            int filasActualizadas = preparedStatement.executeUpdate();
+            if (filasActualizadas > 0) {
+                System.out.println("Stock actualizado correctamente");
+            } else {
+                System.out.println("No se encontró el producto con ID: " + id);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al actualizar el stock: " + ex);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar el PreparedStatement: " + ex);
+            }
+        }
+    }
+    
+    
+    public void AgregarProductoPedido(int id_producto, String nombre, double precio, byte[] imagen, int cantidad, double subtotal) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = cn.prepareStatement(SQL_PRODUCTO_PEDIDO);
+            preparedStatement.setInt(1, id_producto);
+            preparedStatement.setString(2, nombre);
+            preparedStatement.setDouble(3, precio);
+            preparedStatement.setBytes(4, imagen);
+            preparedStatement.setInt(5, cantidad);
+            preparedStatement.setDouble(6, subtotal);
+            preparedStatement.executeUpdate();
+            System.out.println("Pedido agregado correctamente");
+        } catch (SQLException ex) {
+            System.out.println("Error al agregar el pedido: " + ex);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar el PreparedStatement: " + ex);
+            }
+        }
+    }
 }
+    
+
