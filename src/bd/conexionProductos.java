@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import packageBase.DetallePedido;
 
 public class conexionProductos {
 
@@ -20,7 +21,8 @@ public class conexionProductos {
     private String SQL_CONSULTA = "SELECT * FROM productos";
     private String SQL_ELIMINAR = "DELETE FROM productos WHERE id = ?";
     private String SQL_ACTUALIZAR = "UPDATE productos SET id = ?, nombre = ?, precio = ?, stock = ?, imagen = ? WHERE id = ?";
-    private String SQL_PRODUCTO_PEDIDO = "INSERT INTO detalle_pedido (producto_id, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
+    private String SQL_PRODUCTO_PEDIDO = "INSERT INTO detalle_pedido (id_usuario, id_producto, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private String SQL_CONSULTA_DETALLE = "SELECT * FROM detalle_pedido WHERE id_usuario = ?";
 
     public boolean ConectarBD() {
         try {
@@ -177,16 +179,17 @@ public class conexionProductos {
     }
     
     
-    public void AgregarProductoPedido(int id_producto, String nombre, double precio, byte[] imagen, int cantidad, double subtotal) {
+    public void AgregarProductoPedido(int usuario_id, int producto_id , String nombre, double precio, byte[] imagen, int cantidad, double subtotal) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = cn.prepareStatement(SQL_PRODUCTO_PEDIDO);
-            preparedStatement.setInt(1, id_producto);
-            preparedStatement.setString(2, nombre);
-            preparedStatement.setDouble(3, precio);
-            preparedStatement.setBytes(4, imagen);
-            preparedStatement.setInt(5, cantidad);
-            preparedStatement.setDouble(6, subtotal);
+            preparedStatement.setInt(1, usuario_id);
+            preparedStatement.setInt(2, producto_id );
+            preparedStatement.setString(3, nombre);
+            preparedStatement.setDouble(4, precio);
+            preparedStatement.setBytes(5, imagen);
+            preparedStatement.setInt(6, cantidad);
+            preparedStatement.setDouble(7, subtotal);
             preparedStatement.executeUpdate();
             System.out.println("Pedido agregado correctamente");
         } catch (SQLException ex) {
@@ -201,6 +204,40 @@ public class conexionProductos {
             }
         }
     }
+    
+    public ArrayList<DetallePedido> CargarDetalle(int idUsuario) {
+    ArrayList<DetallePedido> ListaDetalle = new ArrayList<>();
+    if (!ConectarBD()) {
+        return null;
+    }
+    try {
+        PreparedStatement consulta = cn.prepareStatement(SQL_CONSULTA_DETALLE);
+        consulta.setInt(1, idUsuario);
+        ResultSet resultado = consulta.executeQuery();
+
+        while (resultado.next()) {
+            DetallePedido detalle = new DetallePedido(
+                    resultado.getInt("id"),
+                    resultado.getInt("id_producto"),
+                    resultado.getInt("id_usuario"),
+                    resultado.getString("nombre"),
+                    resultado.getDouble("precio"),
+                    resultado.getBytes("imagen"),
+                    resultado.getInt("cantidad"),
+                    resultado.getDouble("subtotal")
+            );
+            ListaDetalle.add(detalle);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al cargar los productos: " + e);
+        return null;
+    } finally {
+        desconectarBD();
+    }
+    return ListaDetalle;
+}
+    
+    
 }
     
 

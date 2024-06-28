@@ -9,13 +9,14 @@ import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import packageBase.Sesion;
 /**
  *
  * @author salme
  */
 public class Principal extends javax.swing.JFrame {
     
-    private static final String SELECT_USUARIO_SQL = "SELECT TIPO_ID FROM USUARIO WHERE CORREO = ? AND CONTRASENIA = ?";
+    private static final String SELECT_USUARIO_SQL = "SELECT TIPO_ID, id_usuario FROM USUARIO WHERE CORREO = ? AND CONTRASENIA = ?";
     
     conexionLogin con = new conexionLogin();
     Connection cn = con.ConectarBD();
@@ -204,13 +205,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
     
     public String iniciarSesion(String correoUsuario, String password) {
-        try (PreparedStatement preparedStatement = (PreparedStatement) cn.prepareStatement(SELECT_USUARIO_SQL)) {
+        try (PreparedStatement preparedStatement = cn.prepareStatement(SELECT_USUARIO_SQL)) {
             preparedStatement.setString(1, correoUsuario);
             preparedStatement.setString(2, password);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
+                    int userId = rs.getInt("id_usuario");
                     int tipoId = rs.getInt("TIPO_ID");
+                    guardarSesion(userId);
                     return getUserRole(tipoId);
                 } else {
                     return "USUARIO_NO_ENCONTRADO";
@@ -220,6 +223,12 @@ public class Principal extends javax.swing.JFrame {
             e.printStackTrace();
             return "ERROR";
         }
+    }
+    
+    
+    private void guardarSesion(int userId) {
+        Sesion sesion = Sesion.getInstance();
+        sesion.setUserId(userId);
     }
     
     private String getUserRole(int tipoId) {

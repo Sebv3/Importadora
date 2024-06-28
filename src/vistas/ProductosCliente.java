@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import packageBase.Productos;
 import packageBase.RenderImagen;
+import packageBase.Sesion;
 
 /**
  *
@@ -190,6 +191,7 @@ public class ProductosCliente extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Subtotal:");
 
+        txtCantidad1.setEditable(false);
         txtCantidad1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtCantidad1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -354,7 +356,10 @@ public class ProductosCliente extends javax.swing.JFrame {
         }
     }
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
+        Sesion sesion = Sesion.getInstance();
+
         try {
+        int idUsuario = sesion.getUserId();
         int id = Integer.parseInt(txtID.getText());
         String nombre = txtNombre.getText();
         double precio = Double.parseDouble(txtPrecio.getText());
@@ -373,7 +378,7 @@ public class ProductosCliente extends javax.swing.JFrame {
             imagen = byteArrayOutputStream.toByteArray();
         }
 
-        con.AgregarProductoPedido(id, nombre, precio, imagen, cantidad, subtotal);
+        con.AgregarProductoPedido(idUsuario, id, nombre, precio, imagen, cantidad, subtotal);
 
         JOptionPane.showMessageDialog(this, "Producto agregado al pedido correctamente");
     } catch (NumberFormatException | IOException e) {
