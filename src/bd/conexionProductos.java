@@ -17,14 +17,14 @@ public class conexionProductos {
     private static Statement Consulta;
     private static ResultSet Resultado;
 
-    private String SQL_AGREGAR = "INSERT INTO productos (id, nombre, precio, stock, imagen) VALUES (?, ?, ?, ?, ?)";
+    private String SQL_AGREGAR = "INSERT INTO productos (id_producto, nombre, precio, stock, imagen) VALUES (?, ?, ?, ?, ?)";
     private String SQL_CONSULTA = "SELECT * FROM productos";
-    private String SQL_ELIMINAR = "DELETE FROM productos WHERE id = ?";
-    private String SQL_ACTUALIZAR = "UPDATE productos SET id = ?, nombre = ?, precio = ?, stock = ?, imagen = ? WHERE id = ?";
+    private String SQL_ELIMINAR = "DELETE FROM productos WHERE id_producto = ?";
+    private String SQL_ACTUALIZAR = "UPDATE productos SET id_producto = ?, nombre = ?, precio = ?, stock = ?, imagen = ? WHERE id_producto = ?";
     private String SQL_PRODUCTO_PEDIDO = "INSERT INTO carrito (id_usuario, id_producto, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private String SQL_CONSULTA_CARRITO = "SELECT * FROM carrito WHERE id_usuario = ?";
-    private String SQL_AGREGAR_PEDIDO = "INSERT INTO pedido (idUsuario, totalPedido, direccionPedido, fechaPedido, estadoPedido) VALUES (?, ?, ?, ?, ?)";
-    private String SQL_AGREGAR_DETALLE = "INSERT INTO detalle_pedido (idPedido, idProducto, idUsuario, imagen, precio, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private String SQL_CONSULTA_CARRITO = "SELECT * FROM carrito WHERE  id_usuario = ?";
+    private String SQL_AGREGAR_PEDIDO = "INSERT INTO pedido (id_usuario, direccion, estado, total) VALUES (?, ?, ?, ?)";
+    private String SQL_AGREGAR_DETALLE = "INSERT INTO detalle_pedido (id_pedido, id_usuario, id_producto, cantidad, precio, subtotal, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 
     public boolean ConectarBD() {
@@ -82,7 +82,7 @@ public class conexionProductos {
             Resultado = Consulta.executeQuery(SQL_CONSULTA);
             while (Resultado.next()) {
                 Productos producto = new Productos();
-                producto.setId_producto(Resultado.getInt("id"));
+                producto.setId_producto(Resultado.getInt("id_producto"));
                 producto.setNombre_producto(Resultado.getString("nombre"));
                 producto.setPrecio_producto(Resultado.getInt("precio"));
                 producto.setStock_producto(Resultado.getInt("stock"));
@@ -156,7 +156,7 @@ public class conexionProductos {
     }
 
     public void actualizarStock(int id, int cantidad) {
-        String SQL_ACTUALIZAR_STOCK = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+        String SQL_ACTUALIZAR_STOCK = "UPDATE productos SET stock = stock - ? WHERE id_producto = ?";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = cn.prepareStatement(SQL_ACTUALIZAR_STOCK);
@@ -197,6 +197,67 @@ public class conexionProductos {
             System.out.println("Pedido agregado correctamente");
         } catch (SQLException ex) {
             System.out.println("Error al agregar el pedido: " + ex);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar el PreparedStatement: " + ex);
+            }
+        }
+    }
+    
+    public int AgregarPedido(int id_usuario, double total, String direccion, String estado) {
+      PreparedStatement preparedStatement = null;
+        int idPedidoGenerado = -1;
+        try {
+            preparedStatement = cn.prepareStatement(SQL_AGREGAR_PEDIDO, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, id_usuario);
+            preparedStatement.setDouble(2, total);
+            preparedStatement.setString(3, direccion);
+            preparedStatement.setString(4, estado);
+            
+            int filasAfectadas = preparedStatement.executeUpdate();
+
+            if (filasAfectadas == 1) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    idPedidoGenerado = generatedKeys.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al agregar el pedido: " + ex);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar el PreparedStatement: " + ex);
+            }
+        }
+
+        return idPedidoGenerado;
+    };
+    
+    public void AgregarDetallePedido(int id_pedido, int id_usuario, int id_producto, int cantidad, double precio, double subtotal,  byte[] imagen) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = cn.prepareStatement(SQL_AGREGAR_DETALLE);
+            preparedStatement.setInt(1, id_pedido);
+            preparedStatement.setInt(2, id_usuario);
+            preparedStatement.setInt(3, id_producto);
+            preparedStatement.setInt(4, cantidad);
+            preparedStatement.setDouble(5, precio);
+            preparedStatement.setDouble(6, subtotal);
+            preparedStatement.setBytes(7, imagen);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al agregar el detalle de pedido: " + ex);
         } finally {
             try {
                 if (preparedStatement != null) {

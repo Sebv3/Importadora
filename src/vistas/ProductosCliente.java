@@ -116,7 +116,7 @@ public class ProductosCliente extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Precio", "Stock", "Imagen"
+                "ID Producto", "Nombre", "Precio", "Stock", "Imagen"
             }
         ) {
             Class[] types = new Class [] {
