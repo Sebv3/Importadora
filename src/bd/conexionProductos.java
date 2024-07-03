@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import packageBase.DetallePedido;
+import packageBase.DetallePedidoClase;
 
 public class conexionProductos {
 
@@ -21,8 +21,11 @@ public class conexionProductos {
     private String SQL_CONSULTA = "SELECT * FROM productos";
     private String SQL_ELIMINAR = "DELETE FROM productos WHERE id = ?";
     private String SQL_ACTUALIZAR = "UPDATE productos SET id = ?, nombre = ?, precio = ?, stock = ?, imagen = ? WHERE id = ?";
-    private String SQL_PRODUCTO_PEDIDO = "INSERT INTO detalle_pedido (id_usuario, id_producto, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private String SQL_CONSULTA_DETALLE = "SELECT * FROM detalle_pedido WHERE id_usuario = ?";
+    private String SQL_PRODUCTO_PEDIDO = "INSERT INTO carrito (id_usuario, id_producto, nombre, precio, imagen, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private String SQL_CONSULTA_CARRITO = "SELECT * FROM carrito WHERE id_usuario = ?";
+    private String SQL_AGREGAR_PEDIDO = "INSERT INTO pedido (idUsuario, totalPedido, direccionPedido, fechaPedido, estadoPedido) VALUES (?, ?, ?, ?, ?)";
+    private String SQL_AGREGAR_DETALLE = "INSERT INTO detalle_pedido (idPedido, idProducto, idUsuario, imagen, precio, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
 
     public boolean ConectarBD() {
         try {
@@ -205,18 +208,19 @@ public class conexionProductos {
         }
     }
     
-    public ArrayList<DetallePedido> CargarDetalle(int idUsuario) {
-    ArrayList<DetallePedido> ListaDetalle = new ArrayList<>();
+    
+    public ArrayList<DetallePedidoClase> CargarDetalle(int idUsuario) {
+    ArrayList<DetallePedidoClase> ListaDetalle = new ArrayList<>();
     if (!ConectarBD()) {
         return null;
     }
     try {
-        PreparedStatement consulta = cn.prepareStatement(SQL_CONSULTA_DETALLE);
+        PreparedStatement consulta = cn.prepareStatement(SQL_CONSULTA_CARRITO);
         consulta.setInt(1, idUsuario);
         ResultSet resultado = consulta.executeQuery();
 
         while (resultado.next()) {
-            DetallePedido detalle = new DetallePedido(
+            DetallePedidoClase detalle = new DetallePedidoClase(
                     resultado.getInt("id"),
                     resultado.getInt("id_producto"),
                     resultado.getInt("id_usuario"),

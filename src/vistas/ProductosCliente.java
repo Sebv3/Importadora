@@ -84,10 +84,10 @@ public class ProductosCliente extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnAtras = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtStock = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        btnAtras = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         lblImagen = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -156,16 +156,7 @@ public class ProductosCliente extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Precio:");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Stock:");
-
-        txtStock.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
-        jLabel1.setText("Gestión de Productos");
-
-        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_arrow_14447.png"))); // NOI18N
+        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Flecha-Atras.png"))); // NOI18N
         btnAtras.setBorderPainted(false);
         btnAtras.setContentAreaFilled(false);
         btnAtras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -174,6 +165,15 @@ public class ProductosCliente extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Stock:");
+
+        txtStock.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
+        jLabel1.setText("Gestión de Productos");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Imagen:");

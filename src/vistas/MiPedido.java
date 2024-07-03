@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import packageBase.Productos;
-import packageBase.DetallePedido;
+import packageBase.DetallePedidoClase;
 import packageBase.Sesion;
 
 /**
@@ -44,7 +44,7 @@ public class MiPedido extends javax.swing.JFrame {
         modeloTabla.addColumn("imagen");
         modeloTabla.addColumn("cantidad");
         modeloTabla.addColumn("subtotal");
-        tablaPedidoCliente.setModel(modeloTabla);
+        tablaCarritoCliente.setModel(modeloTabla);
         {
             
         CargarProductos();
@@ -54,13 +54,13 @@ public class MiPedido extends javax.swing.JFrame {
     }
 
     private void CargarProductos() {       
-        tablaPedidoCliente.setDefaultRenderer(Object.class, new packageBase.RenderImagen());
+        tablaCarritoCliente.setDefaultRenderer(Object.class, new packageBase.RenderImagen());
         Sesion sesion = Sesion.getInstance();
         int idUsuario = sesion.getUserId();
-        List<DetallePedido> productosDetalle = con.CargarDetalle(idUsuario);
+        List<DetallePedidoClase> productosDetalle = con.CargarDetalle(idUsuario);
 
         if (productosDetalle != null) {
-            for (DetallePedido producto : productosDetalle) {
+            for (DetallePedidoClase producto : productosDetalle) {
                 Object[] datos = new Object[6];
                 datos[0] = producto.getIdProducto();
                 datos[1] = producto.getNombre();
@@ -82,14 +82,14 @@ public class MiPedido extends javax.swing.JFrame {
                 modeloTabla.addRow(datos);
             }
         }
-        tablaPedidoCliente.setModel(modeloTabla);
-        tablaPedidoCliente.setRowHeight(100);
-        tablaPedidoCliente.getColumnModel().getColumn(0).setPreferredWidth(60);
-        tablaPedidoCliente.getColumnModel().getColumn(1).setPreferredWidth(60);
-        tablaPedidoCliente.getColumnModel().getColumn(2).setPreferredWidth(60);
-        tablaPedidoCliente.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tablaPedidoCliente.getColumnModel().getColumn(4).setPreferredWidth(60);
-        tablaPedidoCliente.getColumnModel().getColumn(5).setPreferredWidth(60);
+        tablaCarritoCliente.setModel(modeloTabla);
+        tablaCarritoCliente.setRowHeight(100);
+        tablaCarritoCliente.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tablaCarritoCliente.getColumnModel().getColumn(1).setPreferredWidth(60);
+        tablaCarritoCliente.getColumnModel().getColumn(2).setPreferredWidth(60);
+        tablaCarritoCliente.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tablaCarritoCliente.getColumnModel().getColumn(4).setPreferredWidth(60);
+        tablaCarritoCliente.getColumnModel().getColumn(5).setPreferredWidth(60);
     }
 
     private void calcularTotal() {
@@ -111,7 +111,7 @@ public class MiPedido extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaPedidoCliente = new javax.swing.JTable();
+        tablaCarritoCliente = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnAtras = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -126,13 +126,13 @@ public class MiPedido extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        tablaPedidoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tablaPedidoCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCarritoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tablaCarritoCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Precio", "Imagen", "Cantidad", "Subtotal"
+                "ID Producto", "Nombre", "Precio", "Imagen", "Cantidad", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
@@ -150,13 +150,13 @@ public class MiPedido extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tablaPedidoCliente);
+        jScrollPane1.setViewportView(tablaCarritoCliente);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
         jLabel1.setText("Mi Carrito");
 
-        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_arrow_14447.png"))); // NOI18N
+        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Flecha-Atras.png"))); // NOI18N
         btnAtras.setBorderPainted(false);
         btnAtras.setContentAreaFilled(false);
         btnAtras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -337,10 +337,6 @@ public class MiPedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnEliminar;
-    private javax.swing.JButton BtnEliminar1;
-    private javax.swing.JButton BtnEliminar2;
-    private javax.swing.JButton BtnEliminar3;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnEliminarDetalle;
     private javax.swing.JButton btnRealizarPedido;
@@ -351,7 +347,7 @@ public class MiPedido extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTable tablaPedidoCliente;
+    private javax.swing.JTable tablaCarritoCliente;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

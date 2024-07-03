@@ -78,7 +78,7 @@ public class MisPedidos extends javax.swing.JFrame {
         jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
         jLabel1.setText("Mis Pedidos");
 
-        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_arrow_14447.png"))); // NOI18N
+        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Flecha-Atras.png"))); // NOI18N
         btnAtras.setBorderPainted(false);
         btnAtras.setContentAreaFilled(false);
         btnAtras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

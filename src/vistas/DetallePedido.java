@@ -66,6 +66,7 @@ public class DetallePedido extends javax.swing.JFrame {
         jLabel1.setForeground(javax.swing.UIManager.getDefaults().getColor("Menu.disabledForeground"));
         jLabel1.setText("Mi Pedido");
 
+        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Flecha-Atras.png"))); // NOI18N
         btnAtras.setBorderPainted(false);
         btnAtras.setContentAreaFilled(false);
         btnAtras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

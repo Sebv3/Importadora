@@ -389,7 +389,7 @@
         <Component class="javax.swing.JButton" name="btnAtras">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/back_arrow_14447.png"/>
+              <Image iconType="3" name="/images/Flecha-Atras.png"/>
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>

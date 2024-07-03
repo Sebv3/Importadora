@@ -1,6 +1,6 @@
 package packageBase;
 
-public class DetallePedido {
+public class DetallePedidoClase {
     private int id;
     private int idProducto;
     private int idUsuario;
@@ -10,7 +10,7 @@ public class DetallePedido {
     private int cantidad;
     private double subtotal;
 
-    public DetallePedido(int id, int idProducto, int idUsuario, String nombre, double precio, byte[] imagen, int cantidad, double subtotal) {
+    public DetallePedidoClase(int id, int idProducto, int idUsuario, String nombre, double precio, byte[] imagen, int cantidad, double subtotal) {
         this.id = id;
         this.idProducto = idProducto;
         this.idUsuario = idUsuario;
