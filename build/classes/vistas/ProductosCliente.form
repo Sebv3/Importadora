@@ -95,7 +95,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="BtnAgregar" min="-2" pref="150" max="-2" attributes="0"/>
-                                      <Component id="txtCantidad1" min="-2" pref="205" max="-2" attributes="0"/>
+                                      <Component id="txtSubtotal" min="-2" pref="205" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -155,7 +155,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCantidad1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtSubtotal" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="BtnAgregar" min="-2" pref="38" max="-2" attributes="0"/>
@@ -373,7 +373,7 @@
             <Property name="text" type="java.lang.String" value="Subtotal:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtCantidad1">
+        <Component class="javax.swing.JTextField" name="txtSubtotal">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -381,7 +381,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCantidad1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSubtotalActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

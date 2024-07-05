@@ -55,12 +55,12 @@ public class ProductosCliente extends javax.swing.JFrame {
 
         @Override
         public void removeUpdate(javax.swing.event.DocumentEvent e) {
-            calcularSubtotal();
+
         }
 
         @Override
         public void changedUpdate(javax.swing.event.DocumentEvent e) {
-            calcularSubtotal();
+
         }
     });
     }
@@ -93,7 +93,7 @@ public class ProductosCliente extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtCantidad1 = new javax.swing.JTextField();
+        txtSubtotal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -191,11 +191,11 @@ public class ProductosCliente extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Subtotal:");
 
-        txtCantidad1.setEditable(false);
-        txtCantidad1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtCantidad1.addActionListener(new java.awt.event.ActionListener() {
+        txtSubtotal.setEditable(false);
+        txtSubtotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSubtotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidad1ActionPerformed(evt);
+                txtSubtotalActionPerformed(evt);
             }
         });
 
@@ -245,7 +245,7 @@ public class ProductosCliente extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(BtnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,7 +289,7 @@ public class ProductosCliente extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addComponent(txtCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addComponent(BtnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
@@ -364,7 +364,7 @@ public class ProductosCliente extends javax.swing.JFrame {
         String nombre = txtNombre.getText();
         double precio = Double.parseDouble(txtPrecio.getText());
         int cantidad = Integer.parseInt(txtCantidad.getText());
-        double subtotal = Double.parseDouble(txtCantidad1.getText());
+        double subtotal = Double.parseDouble(txtSubtotal.getText());
 
         byte[] imagen = null;
         Icon icono = lblImagen.getIcon();
@@ -379,8 +379,10 @@ public class ProductosCliente extends javax.swing.JFrame {
         }
 
         con.AgregarProductoPedido(idUsuario, id, nombre, precio, imagen, cantidad, subtotal);
+        con.actualizarStock(id, cantidad);
 
         JOptionPane.showMessageDialog(this, "Producto agregado al pedido correctamente");
+        limpiar();
     } catch (NumberFormatException | IOException e) {
         JOptionPane.showMessageDialog(this, "Error al procesar la información.", "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -398,6 +400,9 @@ public class ProductosCliente extends javax.swing.JFrame {
         txtNombre.setText("");
         txtPrecio.setText("");
         txtStock.setText("");
+        txtCantidad.setText("");
+        txtSubtotal.setText("");
+        lblImagen.setIcon(null);
     }
 
     private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {
@@ -446,27 +451,34 @@ public class ProductosCliente extends javax.swing.JFrame {
  
 
     private void calcularSubtotal() {
-        try {
-            int cantidad = Integer.parseInt(txtCantidad.getText());
-            double precio = Double.parseDouble(txtPrecio.getText());
-            int stock = Integer.parseInt(txtStock.getText());
-
-            if (cantidad > stock) {
-                JOptionPane.showMessageDialog(this, "La cantidad supera el stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-                txtCantidad.setText("");
-                txtCantidad1.setText("");
-            } else {
-                double subtotal = cantidad * precio;
-                txtCantidad1.setText(String.valueOf(subtotal));
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingresa valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+    try {
+        // Obtener valores actuales
+        int cantidad = 0;
+        if (!txtCantidad.getText().isEmpty()) {
+            cantidad = Integer.parseInt(txtCantidad.getText());
         }
-    }
+        double precio = Double.parseDouble(txtPrecio.getText());
+        int stock = Integer.parseInt(txtStock.getText());
 
-    private void txtCantidad1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidad1ActionPerformed
+        if (cantidad > stock) {
+            // Mostrar mensaje de error
+            JOptionPane.showMessageDialog(this, "La cantidad supera el stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Mantener el subtotal anterior si la cantidad supera el stock
+        } else {
+            // Calcular el subtotal normalmente
+            double subtotal = cantidad * precio;
+            txtSubtotal.setText(String.valueOf(subtotal));
+        }
+    } catch (NumberFormatException e) {
+        // Manejar errores de formato numérico
+        JOptionPane.showMessageDialog(this, "Por favor, ingresa valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+        txtSubtotal.setText(""); // Limpiar el subtotal en caso de error
+    }
+}
+
+    private void txtSubtotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubtotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidad1ActionPerformed
+    }//GEN-LAST:event_txtSubtotalActionPerformed
 
     private void agregarEventoClickTabla() {
         tablaProductosCliente.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -528,10 +540,10 @@ public class ProductosCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblImagen;
     private javax.swing.JTable tablaProductosCliente;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtCantidad1;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtStock;
+    private javax.swing.JTextField txtSubtotal;
     // End of variables declaration//GEN-END:variables
 }

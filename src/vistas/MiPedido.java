@@ -6,8 +6,11 @@ package vistas;
 
 import bd.conexionProductos;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -46,14 +50,14 @@ public class MiPedido extends javax.swing.JFrame {
         modeloTabla.addColumn("subtotal");
         tablaCarritoCliente.setModel(modeloTabla);
         {
-            
-        CargarProductos();
-            
-        calcularTotal();
+
+            CargarProductos();
+
+            calcularTotal();
         }
     }
 
-    private void CargarProductos() {       
+    private void CargarProductos() {
         tablaCarritoCliente.setDefaultRenderer(Object.class, new packageBase.RenderImagen());
         Sesion sesion = Sesion.getInstance();
         int idUsuario = sesion.getUserId();
@@ -67,15 +71,15 @@ public class MiPedido extends javax.swing.JFrame {
                 datos[2] = producto.getPrecio();
 
                 try {
-                        byte[] imagen = producto.getImagen();
-                        BufferedImage bufferedImage = null;
-                        InputStream inputStream = new ByteArrayInputStream(imagen);
-                        bufferedImage = ImageIO.read(inputStream);
-                        ImageIcon mIcono = new ImageIcon(bufferedImage.getScaledInstance(60, 60, 0));
-                        datos[3] = new JLabel(mIcono);
-                    } catch (Exception e) {
-                        datos[3] = new JLabel("No Imagen");
-                    }
+                    byte[] imagen = producto.getImagen();
+                    BufferedImage bufferedImage = null;
+                    InputStream inputStream = new ByteArrayInputStream(imagen);
+                    bufferedImage = ImageIO.read(inputStream);
+                    ImageIcon mIcono = new ImageIcon(bufferedImage.getScaledInstance(60, 60, 0));
+                    datos[3] = new JLabel(mIcono);
+                } catch (Exception e) {
+                    datos[3] = new JLabel("No Imagen");
+                }
 
                 datos[4] = producto.getCantidad();
                 datos[5] = producto.getSubtotal();
@@ -95,7 +99,7 @@ public class MiPedido extends javax.swing.JFrame {
     private void calcularTotal() {
         double total = 0;
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            total += (double) modeloTabla.getValueAt(i, 5); // Suma los subtotales (columna 5)
+            total += (double) modeloTabla.getValueAt(i, 5);
         }
         txtTotal.setText(String.valueOf(total));
     }
@@ -120,7 +124,7 @@ public class MiPedido extends javax.swing.JFrame {
         txtTotal = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaDireccion = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -203,9 +207,9 @@ public class MiPedido extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel3.setText("Por favor ingrese la dirección para la entrega:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        jTextAreaDireccion.setColumns(20);
+        jTextAreaDireccion.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaDireccion);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -290,11 +294,98 @@ public class MiPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarPedidoActionPerformed
-        // TODO add your handling code here:
+        Sesion sesion = Sesion.getInstance();
+        int idUsuario = sesion.getUserId();
+
+        String direccion = jTextAreaDireccion.getText();
+        String estado = "Pendiente";
+        double total = Double.parseDouble(txtTotal.getText());
+
+        int idPedido = con.AgregarPedido(idUsuario, total, direccion, estado);
+
+        if (idPedido != -1) {
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                int idProducto = (int) modeloTabla.getValueAt(i, 0);
+                String nombreProducto = (String) modeloTabla.getValueAt(i, 1);
+                double precio = (double) modeloTabla.getValueAt(i, 2);
+                int cantidad = (int) modeloTabla.getValueAt(i, 4);
+                double subtotal = (double) modeloTabla.getValueAt(i, 5);
+
+                Object value = modeloTabla.getValueAt(i, 3);
+                Icon icono = null;
+                if (value instanceof JLabel) {
+                    JLabel label = (JLabel) value;
+                    icono = label.getIcon();
+                }
+
+                byte[] imagen = null;
+                if (icono != null && icono instanceof ImageIcon) {
+                    BufferedImage bufferedImage = new BufferedImage(
+                            icono.getIconWidth(),
+                            icono.getIconHeight(),
+                            BufferedImage.TYPE_INT_RGB
+                    );
+                    Graphics g = bufferedImage.createGraphics();
+                    icono.paintIcon(null, g, 0, 0);
+                    g.dispose();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    try {
+                        ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+                        imagen = byteArrayOutputStream.toByteArray();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                con.AgregarDetallePedido(idPedido, idUsuario, idProducto, nombreProducto, cantidad, precio, subtotal, imagen);
+            }
+
+            boolean eliminacionExitosa = con.EliminarCarrito(idUsuario);
+            if (eliminacionExitosa) {
+                System.out.println("Productos del carrito eliminados después de realizar el pedido");
+            } else {
+                System.out.println("No se pudieron eliminar los productos del carrito");
+            }
+            
+            CargarProductos();
+
+            calcularTotal();
+
+            dispose();
+            MenuCliente mCli = new MenuCliente();
+            mCli.setVisible(true);
+            mCli.setLocationRelativeTo(null);
+            
+
+            JOptionPane.showMessageDialog(null, "Pedido realizado con éxito");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al realizar el pedido");
+        }
     }//GEN-LAST:event_btnRealizarPedidoActionPerformed
 
     private void btnEliminarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDetalleActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = tablaCarritoCliente.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Selecciona un producto para eliminar del pedido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idProducto = (int) tablaCarritoCliente.getValueAt(filaSeleccionada, 0);
+        Sesion sesion = Sesion.getInstance();
+        int idUsuario = sesion.getUserId();
+        
+        int cantidad = (int) tablaCarritoCliente.getValueAt(filaSeleccionada, 4);
+
+        boolean eliminado = con.EliminarProductoCarrito(idProducto, idUsuario);
+
+        if (eliminado) {
+            JOptionPane.showMessageDialog(null, "Producto eliminado del pedido correctamente");
+            modeloTabla.removeRow(filaSeleccionada);
+            con.actualizarStockSuma(idProducto,cantidad);
+            calcularTotal();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al eliminar el producto del pedido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarDetalleActionPerformed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
@@ -346,7 +437,7 @@ public class MiPedido extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaDireccion;
     private javax.swing.JTable tablaCarritoCliente;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
