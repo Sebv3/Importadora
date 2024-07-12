@@ -55,14 +55,14 @@ public class MisPedidos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID Pedido", "Fecha", "Dirección", "Estado", "Total"
+                "ID Pedido", "Fecha", "Dirección", "Estado", "Total", "Fecha entrega"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, false
+                false, false, true, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {

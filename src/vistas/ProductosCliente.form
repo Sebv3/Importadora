@@ -334,7 +334,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="8c" green="8c" id="Menu.disabledForeground" palette="3" red="8c" type="palette"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Productos"/>
+            <Property name="text" type="java.lang.String" value="Productos Disponibles"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
