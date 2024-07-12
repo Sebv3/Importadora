@@ -201,6 +201,9 @@ public class MisPedidos extends javax.swing.JFrame {
                 modeloTabla.addRow(datos);
             }
         }
+        tablaMisPedidos.setModel(modeloTabla);
+        tablaMisPedidos.setRowHeight(100);
+        
     }
     
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
