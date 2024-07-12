@@ -27,7 +27,6 @@ public class DetallePedido extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        btnCerrarSesion = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPedidoCliente = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -37,16 +36,6 @@ public class DetallePedido extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrarSesion.png"))); // NOI18N
-        btnCerrarSesion.setText("Cerrar Sesión");
-        btnCerrarSesion.setBorderPainted(false);
-        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSesionActionPerformed(evt);
-            }
-        });
 
         tablaPedidoCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tablaPedidoCliente.setModel(new javax.swing.table.DefaultTableModel(
@@ -114,11 +103,6 @@ public class DetallePedido extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(489, 489, 489)
-                    .addComponent(btnCerrarSesion)
-                    .addContainerGap(489, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,11 +119,6 @@ public class DetallePedido extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(286, 286, 286)
-                    .addComponent(btnCerrarSesion)
-                    .addContainerGap(286, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -163,15 +142,11 @@ public class DetallePedido extends javax.swing.JFrame {
         cli.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
-    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+    private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
         dispose();
         Principal pri = new Principal();
         pri.setVisible(true);
         pri.setLocationRelativeTo(null);
-    }//GEN-LAST:event_btnCerrarSesionActionPerformed
-
-    private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCerrarSesion1ActionPerformed
 
     /**
@@ -211,7 +186,6 @@ public class DetallePedido extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
-    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCerrarSesion1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

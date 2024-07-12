@@ -30,7 +30,7 @@ public class MenuCliente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnMiPedido = new javax.swing.JButton();
         btnProductosCliente = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnMisPedidos = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         btnCerrarSesion = new javax.swing.JButton();
 
@@ -64,11 +64,16 @@ public class MenuCliente extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(155, 179, 232));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setText("Ofertas y Destacados");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMisPedidos.setBackground(new java.awt.Color(155, 179, 232));
+        btnMisPedidos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnMisPedidos.setText("Mis pedidos");
+        btnMisPedidos.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMisPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMisPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMisPedidosActionPerformed(evt);
+            }
+        });
 
         btnCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrarSesion.png"))); // NOI18N
@@ -94,7 +99,7 @@ public class MenuCliente extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(54, 54, 54)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnMisPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnMiPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnProductosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -117,7 +122,7 @@ public class MenuCliente extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(btnProductosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMisPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
@@ -155,6 +160,13 @@ public class MenuCliente extends javax.swing.JFrame {
         pri.setVisible(true);
         pri.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
+    private void btnMisPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisPedidosActionPerformed
+        dispose();
+        MisPedidos ped = new MisPedidos();
+        ped.setVisible(true);
+        ped.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnMisPedidosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,8 +206,8 @@ public class MenuCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnMiPedido;
+    private javax.swing.JButton btnMisPedidos;
     private javax.swing.JButton btnProductosCliente;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;

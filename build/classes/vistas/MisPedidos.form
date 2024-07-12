@@ -216,6 +216,9 @@
             <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
             <Property name="borderPainted" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCerrarSesion2ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

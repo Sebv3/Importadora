@@ -4,17 +4,47 @@
  */
 package vistas;
 
+import bd.conexionProductos;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+import packageBase.DetallePedidoClase;
+import packageBase.Pedido;
+import packageBase.Sesion;
+
 /**
  *
  * @author salme
  */
 public class MisPedidos extends javax.swing.JFrame {
+    
+    DefaultTableModel modeloTabla = new DefaultTableModel();
+    conexionProductos con;
+    String Ruta = "";
 
     /**
      * Creates new form MisPedidos
      */
     public MisPedidos() {
+        con = new conexionProductos();
         initComponents();
+        modeloTabla.addColumn("id_pedido");
+        modeloTabla.addColumn("fecha");
+        modeloTabla.addColumn("direccion");
+        modeloTabla.addColumn("estado");
+        modeloTabla.addColumn("total");
+        modeloTabla.addColumn("fecha_entrega");
+        tablaMisPedidos.setModel(modeloTabla);
+        {
+
+            CargarProductos();
+
+        }
     }
 
     /**
@@ -93,6 +123,11 @@ public class MisPedidos extends javax.swing.JFrame {
         btnCerrarSesion2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrarSesion.png"))); // NOI18N
         btnCerrarSesion2.setText("Cerrar Sesión");
         btnCerrarSesion2.setBorderPainted(false);
+        btnCerrarSesion2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesion2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -148,17 +183,43 @@ public class MisPedidos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void CargarProductos() {
+        Sesion sesion = Sesion.getInstance();
+        int idUsuario = sesion.getUserId();
+        List<Pedido> pedidos = con.CargarPedidos(idUsuario);
 
+        if (pedidos != null) {
+            for (Pedido pedido : pedidos) {
+                Object[] datos = new Object[6];
+                datos[0] = pedido.getIdPedido();
+                datos[1] = pedido.getFecha();
+                datos[2] = pedido.getDireccion();
+                datos[3] = pedido.getEstado();
+                datos[4] = pedido.getTotal();
+                datos[5] = pedido.getFechaEntrega();
+                modeloTabla.addRow(datos);
+            }
+        }
+    }
+    
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         dispose();
-        MenuSupervisor age = new MenuSupervisor();
-        age.setVisible(true);
-        age.setLocationRelativeTo(null);
+        MenuCliente cli = new MenuCliente();
+        cli.setVisible(true);
+        cli.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarPedidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRealizarPedidoActionPerformed
+
+    private void btnCerrarSesion2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion2ActionPerformed
+        dispose();
+        Principal pri = new Principal();
+        pri.setVisible(true);
+        pri.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnCerrarSesion2ActionPerformed
 
     /**
      * @param args the command line arguments

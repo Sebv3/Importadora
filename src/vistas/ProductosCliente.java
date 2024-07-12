@@ -204,6 +204,11 @@ public class ProductosCliente extends javax.swing.JFrame {
         btnCerrarSesion2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrarSesion.png"))); // NOI18N
         btnCerrarSesion2.setText("Cerrar Sesión");
         btnCerrarSesion2.setBorderPainted(false);
+        btnCerrarSesion2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesion2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -487,6 +492,13 @@ public class ProductosCliente extends javax.swing.JFrame {
     private void txtSubtotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubtotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSubtotalActionPerformed
+
+    private void btnCerrarSesion2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion2ActionPerformed
+        dispose();
+        Principal pri = new Principal();
+        pri.setVisible(true);
+        pri.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnCerrarSesion2ActionPerformed
 
     private void agregarEventoClickTabla() {
         tablaProductosCliente.addMouseListener(new java.awt.event.MouseAdapter() {

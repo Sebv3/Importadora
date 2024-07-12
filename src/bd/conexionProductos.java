@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import packageBase.DetallePedidoClase;
+import packageBase.Pedido;
 
 public class conexionProductos {
 
@@ -26,6 +27,7 @@ public class conexionProductos {
     private String SQL_ELIMINAR_CARRITO = "DELETE FROM carrito WHERE id_usuario = ?";
     private String SQL_AGREGAR_PEDIDO = "INSERT INTO pedido (id_usuario, direccion, estado, total) VALUES (?, ?, ?, ?)";
     private String SQL_AGREGAR_DETALLE = "INSERT INTO detalle_pedido (id_pedido, id_usuario, id_producto, nombre, cantidad, precio, subtotal, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private String SQL_CONSULTA_PEDIDOS = "SELECT id_pedido, fecha, direccion, estado, total, fecha_entrega FROM pedido WHERE id_usuario = ?";
 
     public boolean ConectarBD() {
         try {
@@ -246,7 +248,6 @@ public class conexionProductos {
             }
 
             if (!encontrado) {
-                // Si no se encontró el producto en el carrito, agregarlo como nuevo
                 preparedStatement = cn.prepareStatement(SQL_PRODUCTO_PEDIDO);
                 preparedStatement.setInt(1, usuario_id);
                 preparedStatement.setInt(2, producto_id);
@@ -450,6 +451,36 @@ public class conexionProductos {
                 System.out.println("Error al cerrar el PreparedStatement: " + ex);
             }
         }
+    }
+    
+    public ArrayList<Pedido> CargarPedidos(int idUsuario) {
+        ArrayList<Pedido> ListaPedidos = new ArrayList<>();
+        if (!ConectarBD()) {
+            return null;
+        }
+        try {
+            PreparedStatement consulta = cn.prepareStatement(SQL_CONSULTA_PEDIDOS);
+            consulta.setInt(1, idUsuario);
+            ResultSet resultado = consulta.executeQuery();
+
+            while (resultado.next()) {
+                Pedido pedido = new Pedido(
+                        resultado.getInt("id_pedido"),
+                        resultado.getDate("fecha"),
+                        resultado.getString("direccion"),
+                        resultado.getString("estado"),
+                        resultado.getInt("total"),
+                        resultado.getDate("fecha_entrega")
+                );
+                ListaPedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar los productos: " + e);
+            return null;
+        } finally {
+            desconectarBD();
+        }
+        return ListaPedidos;
     }
 
 }
